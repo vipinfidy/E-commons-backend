@@ -6,8 +6,16 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
+app.use(cros({
+    origin: true,         // Reflects request's origin back in the response
+    credentials: true,    // Allows cookies or Authorization headers
+  }));
+  
 app.use(express.json());
-app.use(cros());
+
+
+
+  
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MODE === 'docker'
@@ -31,6 +39,10 @@ app.use('/api/auth', authRoutes);
 
 const userRoutes = require('./routes/userRoutes');
 app.use('/api/user', userRoutes);
+
+// add product routes
+const productRoutes = require('./routes/productRoutes');
+app.use('/api/products', productRoutes);
 
 
 // Sample Route
